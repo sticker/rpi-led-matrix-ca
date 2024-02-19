@@ -37,6 +37,8 @@
     "check": "npx tsc --noEmit",
     "clean": "rm -rf dist",
     "example": "sudo ts-node -P examples/tsconfig.json",
+    "work": "sudo ts-node -P works/tsconfig.json",
+    
     "format": "prettier --write src/ examples/",
     "lint": "eslint src/ examples/",
     "merge-submodule-upstream": "(cd vendor && git fetch && git merge origin/master)",
