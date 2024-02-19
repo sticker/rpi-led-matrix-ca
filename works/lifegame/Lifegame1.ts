@@ -8,6 +8,7 @@ export class Lifegame1{
     private isPingPong : boolean = false;
     //private rule:number = 0;
     private ruleMap:RuleMap;
+    
 
     constructor(ruleMap: RuleMap){
         
@@ -79,11 +80,15 @@ export class Lifegame1{
 
     }
 
-    update(ruleIndex:number){
+    update(type:number, ruleIndex:number){
 
         this.isPingPong = !this.isPingPong;
 
-        this.calc1d(ruleIndex);
+        if(type==0){
+            this.calc1d(ruleIndex);
+        }else{
+            this.calc2d(ruleIndex);
+        }
         
 
     }

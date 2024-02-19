@@ -5,7 +5,7 @@ export class RuleMap{
     public rules :{a:number,b:number,c:number}[][];
     public rects:RuleRect[];
     private rectIndex:number = 0;
-    private past    :number = 0;
+    private past    :number;
     private frame   :number = 0;
 
     constructor(){
@@ -73,7 +73,7 @@ export class RuleMap{
 
     private makeRect(currentTime:number){
 
-       // console.log(currentTime);
+        console.log(currentTime);
 
         let rect = this.rects[this.rectIndex%this.rects.length];
         rect.reset(currentTime);

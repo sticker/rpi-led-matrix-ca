@@ -8,7 +8,7 @@ import { matrixOptions, runtimeOptions } from './_config';
  (async () => {
    try {
     const matrix = new LedMatrix(matrixOptions, runtimeOptions);
-    const lifegame:any = new Lifegame();
+    const lifegame:any = new Lifegame(1);
 
     while(true){
       matrix.sync();
