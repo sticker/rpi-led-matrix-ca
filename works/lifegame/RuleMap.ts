@@ -5,7 +5,7 @@ export class RuleMap{
     public rules :{a:number,b:number,c:number}[][];
     public rects:RuleRect[];
     private rectIndex:number = 0;
-    private past    :number;
+    private past    :number = 0;
     private frame   :number = 0;
 
     constructor(){
