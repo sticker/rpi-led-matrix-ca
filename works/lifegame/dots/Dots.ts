@@ -7,7 +7,7 @@ export class Dots{
     public dots:Dot[];
     public grids    :number[][];
     public colors   :number[][];
-    public limit    :number = 0;
+
 
     constructor(){
 
@@ -124,28 +124,24 @@ export class Dots{
 
             //this.dots[i]=p1;
 
-            let lim = this.limit;
             if(p1.x<0){
                 p1.x = 0;//Forces.WIDTH-1;
                 p1.vx *= -1;
             } 
-            if(p1.y<lim){
-                p1.y = lim;//Forces.HEIGHT-1;
+            if(p1.y<0){
+                p1.y = 0;//Forces.HEIGHT-1;
                 p1.vy *= -1;
             }
             if(p1.x>=Forces.WIDTH){
                 p1.x =Forces.WIDTH-1;
                 p1.vx *= -1;
             }
-            if(p1.y>=Forces.HEIGHT-lim){
-                p1.y =Forces.HEIGHT-1-lim;
+            if(p1.y>=Forces.HEIGHT){
+                p1.y =Forces.HEIGHT-1;
                 p1.vy *= -1;
             }
 
         }
-
-        this.limit+=Math.random()<0.1 ? 1 : 0;
-        if(this.limit>30)this.limit=0;
 
     }
 

@@ -3,37 +3,23 @@
 git clone --recursive https://github.com/kitasenjudesign/rpi-led-matrix-ca.git
 
 その後、
-
-npm install
-
-## How to use
-
-多分、--recursiveが必要。
-
-```
-git clone --recursive https://github.com/kitasenjudesign/rpi-led-matrix-ca.git
-```
-
-
-その後、
-
 ```
 npm install
 ```
 
 
-実行
+## 実行
 
 ```
-sudo npm run work -- works/ca1.ts
+sudo npm run work -- works/caA.ts
 ```
 
+
+## node ver
+
+v18.19.0で確認
 
 
 ## Forked from
 
 https://github.com/alexeden/rpi-led-matrix
-
-## node ver
-
-v18.19.0で確認

@@ -81,7 +81,7 @@ export class CAMain{
             }
         }
 
-        let nn = 0;//Math.floor(Math.sin(this._count*0.02)*2+2);
+        let nn = Math.floor(Math.sin(this._count*0.1)*2+2);
         let res = Math.pow(2,nn);
         this.changeResolution(res);
 
@@ -91,6 +91,7 @@ export class CAMain{
 
     changeResolution(res:number){
 
+        //console.log(res);
         for(let j=0;j<64;j+=res){
             for(let i=0;i<64;i+=res){
             
@@ -110,8 +111,7 @@ export class CAMain{
                 for(let jj=0;jj<res;jj++){
                     for(let ii=0;ii<res;ii++){
                         let idx = (i+ii)+(j+jj)*64;
-                        //idx = (idx+Math.floor(this._count/4))%(64*64);
-
+                        
                         this._output[idx*3+0] = rr;
                         this._output[idx*3+1] = gg;
                         this._output[idx*3+2] = bb;
@@ -122,19 +122,6 @@ export class CAMain{
 
             }
         }
-
-        /*
-        let output = this._output.slice(0,this._output.length);
-        for(let j=0;j<64;j+=1){
-            for(let i=0;i<64;i+=1){
-                let idx = (i)+(j)*64;
-                let jj = (j+Math.floor(this._count*0.1))%64;
-                let idx2 = (i+jj*64)%(64*64);
-                this._output[idx2*3+0] = output[idx*3+0];
-                this._output[idx2*3+1] = output[idx*3+1];
-                this._output[idx2*3+2] = output[idx*3+2];
-            }
-        }*/
           
 
     }

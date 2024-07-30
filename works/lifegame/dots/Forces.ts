@@ -26,7 +26,9 @@ export class Forces{
         let num = Forces.NUM;
         for(let i = 0; i < num; i++){
             for(let j = 0; j < num; j++){
-                    this.forces[i+"_"+j] = Math.random()>0.5 ? -1 : 1;
+                    this.forces[i+"_"+j] 
+                    =Math.random()-0.5;
+                    //= Math.random()>0.5 ? -1 : 1;
             }
         }
 
