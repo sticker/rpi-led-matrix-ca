@@ -1,91 +1,32 @@
+import { dir } from 'console';
 import { Params } from './Params';
 import { RuleMap } from './RuleMap';
 import { Rules } from "./Rules";
-import { Dots } from './dots/Dots';
 
 export class Lifegame1{
 
     public grid1 :number[][];
     public grid2 :number[][];
-    public frames :number[];
-    public velocity :number[];
     private isPingPong : boolean = false;
     //private rule:number = 0;
     private ruleMap:RuleMap;
     private frame:number=0;
-    private dots:Dots;
+    
 
     constructor(ruleMap: RuleMap){
         
         this.grid1 = [];
         this.grid2 = [];
-        this.velocity = [];
-        this.frames = [];
+
         this.ruleMap = ruleMap;
 
-        this.dots = new Dots();
-
-
-        for(let i=0;i<64;i++){
-            this.velocity[i]=0;
-           
-        }
-        console.log(this.velocity);
-
-        let vel = [
-            Math.floor(1+Math.random()*9),
-            Math.floor(1+Math.random()*9),
-            Math.floor(1+Math.random()*9),
-            Math.floor(1+Math.random()*9),
-            Math.floor(1+Math.random()*9),
-            Math.floor(1+Math.random()*9),
-            Math.floor(1+Math.random()*9),
-            Math.floor(1+Math.random()*9)
-        ];
-
         for(let j=0;j<64;j++){
-            
-            this.frames[j]=0;
 
             let listA = [];
             let listB = [];
-            let th = [64,32,16,8,4,2,1];
-            let height = [32,16,8,4,2,1,1]
-            let tgtHeight = 0;
+
             for(let i=0;i<64;i++){
-                
-                let value = 0;
-                if(j<32){
-                    value = i%64<32 ? 1 : 0;
-                    this.velocity[j]=vel[0];
-                }else if(j<32+16){
-                    value = i%32<16 ? 1 : 0;
-                    this.velocity[j]=vel[1];
-
-                }else if(j<32+16+8){
-                    value = i%16<8 ? 1 : 0;
-                    this.velocity[j]=vel[2];
-
-                }else if(j<32+16+8+4){
-                    value = i%8<4 ? 1 : 0;
-                    this.velocity[j]=vel[3];
-
-                }else if(j<32+16+8+4+2){
-                    value = i%4<2 ? 1 : 0;
-                    this.velocity[j]=vel[4];
-
-                }else if(j<32+16+8+4+2+1){
-                    value = i%2<1 ? 1 : 0;
-                    this.velocity[j]=vel[5];
-
-                }else{
-                    value = 1;
-                    this.velocity[j]=vel[6];
-
-                }
-                //i%th[j%th.length]<th[j%th.length]/2 ? 1 : 0;
-                
-
+                let value = 1;//Math.random()<0.5 ? 1 : 0 
                 listA[i] = value;
                 listB[i] = value;
             }
@@ -104,9 +45,6 @@ export class Lifegame1{
     getGrid2():number[][]{
         //return this.grid1;
         return !this.isPingPong ? this.grid1 : this.grid2;
-    }
-    getDots():number[][]{
-        return this.dots.getGrids();
     }
 
 
@@ -147,39 +85,31 @@ export class Lifegame1{
 
     update(ruleIndex:number){
 
-        this.dots.update();
-
         this.isPingPong = !this.isPingPong;
 
-        for(let j=0;j<64;j++){
-
-            let flag = false;
-            this.frames[j] += this.velocity[j];
-
-            if(this.frames[j]>10){
-                this.frames[j]=this.frames[j]%10;
-                flag=true;
-            }
-            for(let i=0;i<64;i++){
-                let p = this.getPixel(i,j);
-                let idx = flag?i+1:i;
-                idx=idx%64;
-                this.setPixel(p,idx,j);
-            }                
+        switch(Params.caType){
+            case 0:
+                this.calc1d(ruleIndex);
+                break;
+            case 1:
+                this.calc2d(ruleIndex);
+                break;
+            case 2:
+                this.calcBoth(ruleIndex);
+                break;
         }
+             
+        this.frame++;
+        if(this.frame>10000)this.frame=0;
 
-        //this.frame++;
-        //if(this.frame>10000)this.frame=0;
+
 
         //this.calcBoth(
         //    ruleIndex
-        //)        
+        //)
+        
 
     }
-
-
-
-
 
     calcBoth(ruleIndex:number){
 
@@ -262,7 +192,6 @@ export class Lifegame1{
 
     getRule(i:number,j:number,ruleIndex:number):number{
 
-        
         let rule:number = 0;
         switch(ruleIndex){
             case 0:

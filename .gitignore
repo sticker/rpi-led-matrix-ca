@@ -41,3 +41,6 @@ sshpi
 .vscode/*
 !.vscode/settings.json
 .DS_Store
+
+*.key
+*.pub

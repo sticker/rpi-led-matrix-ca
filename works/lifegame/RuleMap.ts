@@ -1,3 +1,4 @@
+import { Params } from "./Params";
 import { RuleRect } from "./RuleRect";
 
 export class RuleMap{
@@ -5,8 +6,11 @@ export class RuleMap{
     public rules :{a:number,b:number,c:number}[][];
     public rects:RuleRect[];
     private rectIndex:number = 0;
-    private past    :number = 0;
+    private past    :number;
+    private date    :Date;
+
     private frame   :number = 0;
+    //private dir     :number = 1;
 
     constructor(){
 
@@ -25,7 +29,7 @@ export class RuleMap{
         }
 
         this.rects = [];
-        for(let i=0;i<18;i++){
+        for(let i=0;i<30;i++){
             let rect =new RuleRect()
             this.rects.push(rect);
         }
@@ -73,10 +77,13 @@ export class RuleMap{
 
     private makeRect(currentTime:number){
 
-        console.log(currentTime);
-
-        let rect = this.rects[this.rectIndex%this.rects.length];
-        rect.reset(currentTime);
+        let rect = this.rects.shift();//[this.rectIndex%this.rects.length];
+        rect.reset(
+            currentTime,
+            Params.dir,
+            this.date.getSeconds()
+        );
+        this.rects.push(rect);
 
         this.rectIndex++;
 
@@ -86,36 +93,55 @@ export class RuleMap{
     public update(frame:number){
 
 
-        let date = new Date();
-        let currentTime = Math.floor(date.getTime()/1000);
+        this.date = new Date();
+        
+        let currentTime = Math.floor(this.date.getTime()/1000);
+
+
         if(currentTime!=(this.past)){
 
-            this.makeRect(currentTime);
+            if(currentTime%2==0) this.makeRect(currentTime);
 
-        }
+            //console.log(currentTime);
+            //console.log(this.date.getSeconds());
 
-        this.past = Math.floor(date.getTime()/1000);
-
-
-
-        for(let j=0;j<64;j++){
-            for(let i=0;i<64;i++){
-                this.rules[j][i].a = 0;
-                this.rules[j][i].b = 0;
-                this.rules[j][i].c = 0;                
+            if(this.date.getSeconds()==0){
+                //this.dir = this.dir==1 ? -1 : 1;
             }
+
         }
+
+        this.past = Math.floor(this.date.getTime()/1000);
+
+
+
+
+            for(let j=0;j<64;j++){
+                for(let i=0;i<64;i++){
+                    this.rules[j][i].a = 0;
+                    this.rules[j][i].b = 0;//Math.floor(Math.random()*512);
+                    this.rules[j][i].c = 0;//Math.floor(Math.random()*512);                
+                }
+            }  
 
 
         this.frame++;
+        let speed = 1;//(this.date.getTime()>50) ? 2 : 1;
 
         for(let i=0;i<this.rects.length;i++){
 
+            let updateFrame = Math.floor(this.rects[i].updateFrame/speed);
+            if(updateFrame<=1) updateFrame = 1;
+
+            //あるフレームのみ更新する
             if(
-                this.frame%this.rects[i].updateFrame==0
+                this.frame % updateFrame == 0
             ){
-                this.rects[i].update();
+                
+                this.rects[i].update(Params.dir);
+                
             }
+
 
             this.fillRect(
                 
@@ -127,6 +153,7 @@ export class RuleMap{
                 this.rects[i].y,
                 this.rects[i].w,
                 this.rects[i].h
+
             )
 
         }

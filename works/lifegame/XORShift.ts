@@ -1,3 +1,5 @@
+import { Params } from "./Params";
+
 export class XORShift {
 
     x:number = 0;
@@ -10,7 +12,7 @@ export class XORShift {
       this.x = 123456789;
       this.y = 362436069;
       this.z = 521288629;
-      this.w = seed;
+      this.w = seed + Params.id*10000;
     }
     
     // XorShift

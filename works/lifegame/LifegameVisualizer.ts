@@ -5,11 +5,15 @@ export class LifegameVisualizer{
 
     lifegame:Lifegame;
     doms: HTMLElement[][]
+    rects: HTMLElement[];
+
 
     constructor(lifegame:Lifegame){
 
         this.lifegame = lifegame;
         this.doms = [];
+
+
         for(let j=0;j<64;j++){
 
             let listA = [];
@@ -48,10 +52,15 @@ export class LifegameVisualizer{
 
         //console.log(d);
         
+
+
+
         for(let j=0;j<64;j++){
             for(let i=0;i<64;i++){
 
                 let idx = i+j*64;
+
+
 
                 let rr =  (d[idx*3+0]<128 ? "0" : "f");
                 let gg =  (d[idx*3+1]<128 ? "0" : "f");

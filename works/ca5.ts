@@ -10,7 +10,7 @@ import { Params } from './lifegame/Params';
    try {
     const matrix = new LedMatrix(matrixOptions, runtimeOptions);
 
-    Params.init(1);
+    Params.init(4);
     const lifegame:any = new Lifegame();
 
     while(true){
