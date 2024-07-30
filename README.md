@@ -1,3 +1,10 @@
+## how to install
+
+git clone --recursive https://github.com/kitasenjudesign/rpi-led-matrix-ca.git
+
+その後、
+
+npm install
 
 ## how to use
 
