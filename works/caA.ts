@@ -23,7 +23,7 @@ const getNumConnect = async (page: any): Promise<number> => {
 
 (async () => {
   try {
-    const executablePath = '/opt/google/chrome/google-chrome';
+    const executablePath = '/usr/bin/chromium-browser';
     const browser = await chromium.launch({
       executablePath: executablePath,
       headless: true,
@@ -36,12 +36,21 @@ const getNumConnect = async (page: any): Promise<number> => {
     Params.init(0);
     const ca: any = new CAMain();
 
-    //無限ループ
-    while (true) {
-      matrix.sync();
+    let numConnect = 1; // デフォルトの接続数で初期化
+    let lastUpdateTime = Date.now(); // 最後の更新時間を記録
 
-      const numConnect = await getNumConnect(page);
-      ca.update(numConnect); //コネクト数を渡す
+    // 無限ループ
+    while (true) {
+      const currentTime = Date.now();
+
+      // 最後の更新から5秒経過したかをチェック
+      if (currentTime - lastUpdateTime >= 5000) {
+        numConnect = await getNumConnect(page)
+        lastUpdateTime = currentTime;
+      }
+
+      matrix.sync();
+      ca.update(numConnect);
 
       matrix
         .clear() // clear the display
