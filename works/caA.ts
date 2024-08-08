@@ -21,7 +21,8 @@ const getNumConnect = async (page: any): Promise<number> => {
   }
 };
 
-(async () => {
+// ブラウザを初期化する関数
+const initializeBrowser = async () => {
   try {
     const executablePath = '/usr/bin/chromium-browser';
     const browser = await chromium.launch({
@@ -29,14 +30,25 @@ const getNumConnect = async (page: any): Promise<number> => {
       headless: true,
     });
     const page = await browser.newPage();
-    await page.goto('https://p2p-next-app.vercel.app/');
+    await page.goto('http://ec2-54-178-27-84.ap-northeast-1.compute.amazonaws.com:3000/');
+    return { browser, page };
+  } catch (error) {
+    console.error('Error launching browser or navigating to page:', error);
+    return { browser: null, page: null };
+  }
+};
 
+(async () => {
+  let browser = null;
+  let page = null;
+  let numConnect = 1; // デフォルトの接続数で初期化
+
+  try {
     const matrix = new LedMatrix(matrixOptions, runtimeOptions);
 
     Params.init(0);
     const ca: any = new CAMain();
 
-    let numConnect = 1; // デフォルトの接続数で初期化
     let lastUpdateTime = Date.now(); // 最後の更新時間を記録
 
     // 無限ループ
@@ -45,7 +57,22 @@ const getNumConnect = async (page: any): Promise<number> => {
 
       // 最後の更新から5秒経過したかをチェック
       if (currentTime - lastUpdateTime >= 5000) {
-        numConnect = await getNumConnect(page)
+        if (!page) {
+          // ページが未初期化の場合、ブラウザを初期化
+          const result = await initializeBrowser();
+          browser = result.browser;
+          page = result.page;
+        }
+
+        if (page) {
+          try {
+            numConnect = await getNumConnect(page);
+          } catch (error) {
+            console.error('Error during connection update:', error);
+            numConnect = 1; // エラー発生時にデフォルト値を使用
+          }
+        }
+
         lastUpdateTime = currentTime;
       }
 
@@ -60,5 +87,9 @@ const getNumConnect = async (page: any): Promise<number> => {
     }
   } catch (error) {
     console.error(`${__filename} caught: `, error);
+  } finally {
+    if (browser) {
+      await browser.close(); // ブラウザを確実に閉じる
+    }
   }
 })();
