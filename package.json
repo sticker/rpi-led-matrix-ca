@@ -38,7 +38,6 @@
     "clean": "rm -rf dist",
     "example": "sudo ts-node -P examples/tsconfig.json",
     "work": "sudo ts-node -P works/tsconfig.json",
-    
     "format": "prettier --write src/ examples/",
     "lint": "eslint src/ examples/",
     "merge-submodule-upstream": "(cd vendor && git fetch && git merge origin/master)",
@@ -49,7 +48,8 @@
   },
   "dependencies": {
     "bindings": "^1.5.0",
-    "node-addon-api": "^3.0.0"
+    "node-addon-api": "^3.0.0",
+    "playwright": "^1.45.3"
   },
   "devDependencies": {
     "@types/color": "^3.0.1",
